@@ -40,3 +40,23 @@ CONST_MAP: dict[str, str] = {
 
 # All keywords that participate in identifier splitting, sorted longest-first.
 KEYWORDS_BY_LENGTH: list[str] = sorted(KEYWORD_TYPE.keys(), key=len, reverse=True)
+
+# Mapping from input function name → SymPy function attribute name.
+SYMPY_FUNC_MAP: dict[str, str] = {
+    "sin": "sin",
+    "cos": "cos",
+    "tan": "tan",
+    "cot": "cot",
+    "sec": "sec",
+    "csc": "csc",
+    "log": "log",
+    "ln": "log",
+    "exp": "exp",
+}
+
+# Mapping from input constant name → SymPy constant attribute name.
+SYMPY_CONST_MAP: dict[str, str] = {
+    "pi": "pi",
+    "e": "E",
+    "infty": "oo",
+}

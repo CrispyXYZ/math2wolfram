@@ -12,6 +12,7 @@ license = { text = "MIT" }
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+execute = ["sympy>=1.12"]
 
 [tool.setuptools.packages.find]
 where = ["."]
