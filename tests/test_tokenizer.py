@@ -1,6 +1,6 @@
 import pytest
-from math2wolfram.tokenizer import Lexer, Token
-from math2wolfram.errors import LexerError
+from mathio.tokenizer import Lexer, Token
+from mathio.errors import LexerError
 
 
 def token_types(tokens):

@@ -21,12 +21,18 @@ class SymPyExecutor:
 
         return self._to_sympy(node, sympy)
 
-    def evaluate(self, node: a.Expr, *, pretty: bool = True) -> str:
+    def evaluate(self, node: a.Expr, *, fmt: str = "pretty") -> str:
+        """Evaluate *node* and return a formatted string.
+
+        *fmt*: ``"pretty"`` (Unicode), ``"plain"`` (plain text), or ``"latex"``.
+        """
         result = self.execute(node)
         import sympy
-        if pretty:
-            return sympy.pretty(result, use_unicode=True)
-        return str(result)
+        if fmt == "latex":
+            return sympy.latex(result)
+        if fmt == "plain":
+            return str(result)
+        return sympy.pretty(result, use_unicode=True)
 
     # ── dispatch ──────────────────────────────────────────────────────
 

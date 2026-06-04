@@ -3,16 +3,16 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "math2wolfram"
+name = "mathio"
 version = "0.1.0"
-description = "Convert custom mathematical notation to Wolfram Language expressions"
+description = "Parse custom math notation and evaluate symbolically with SymPy"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
+dependencies = ["sympy>=1.12"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
-execute = ["sympy>=1.12"]
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -1,11 +1,11 @@
 import pytest
-from math2wolfram.tokenizer import Lexer
-from math2wolfram.parser import Parser
-from math2wolfram.ast_nodes import (
+from mathio.tokenizer import Lexer
+from mathio.parser import Parser
+from mathio.ast_nodes import (
     BinaryOp, Constant, DefiniteIntegral, Derivative, FuncCall,
     Identifier, ImplicitMultiply, Integral, Negation, Number,
 )
-from math2wolfram.errors import ParseError
+from mathio.errors import ParseError
 
 
 def parse(s):

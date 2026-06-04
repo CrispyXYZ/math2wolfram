@@ -1,6 +1,6 @@
 import pytest
-from math2wolfram.sympy_executor import SymPyExecutor
-from math2wolfram.ast_nodes import (
+from mathio.sympy_executor import SymPyExecutor
+from mathio.ast_nodes import (
     BinaryOp, Constant, DefiniteIntegral, Derivative, FuncCall,
     Identifier, ImplicitMultiply, Integral, Negation, Number,
 )
@@ -9,8 +9,8 @@ from math2wolfram.ast_nodes import (
 executor = SymPyExecutor()
 
 
-def ev(node, pretty=False):
-    return executor.evaluate(node, pretty=pretty)
+def ev(node, fmt="plain"):
+    return executor.evaluate(node, fmt=fmt)
 
 
 class TestNumbers:
@@ -143,5 +143,5 @@ class TestNegation:
 
 class TestPrettyOutput:
     def test_pretty_uses_unicode(self):
-        result = ev(BinaryOp("/", Identifier("x"), Number("2")), pretty=True)
+        result = ev(BinaryOp("/", Identifier("x"), Number("2")), fmt="pretty")
         assert "─" in result or "x" in result

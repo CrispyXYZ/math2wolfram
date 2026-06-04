@@ -1,6 +1,6 @@
 import sys
 
-from .converter import convert, execute
+from .converter import convert, to_wolfram
 
 
 def main():
@@ -9,8 +9,8 @@ def main():
         _usage()
         sys.exit(1)
 
-    execute_mode = False
-    pretty = True
+    wolfram_mode = False
+    fmt = "pretty"
     filename = None
     positional: list[str] = []
 
@@ -23,10 +23,12 @@ def main():
                 print("Error: -f/--file requires a filename", file=sys.stderr)
                 sys.exit(1)
             filename = args[i]
-        elif arg == "--execute":
-            execute_mode = True
+        elif arg == "--wolfram":
+            wolfram_mode = True
         elif arg == "--plain":
-            pretty = False
+            fmt = "plain"
+        elif arg == "--latex":
+            fmt = "latex"
         elif arg == "-h" or arg == "--help":
             _usage()
             sys.exit(0)
@@ -37,35 +39,35 @@ def main():
     expr = " ".join(positional) if positional else None
 
     if filename is not None:
-        _process_file(filename, execute_mode, pretty)
+        _process_file(filename, wolfram_mode, fmt)
     elif expr is not None:
-        _process_expr(expr, execute_mode, pretty)
+        _process_expr(expr, wolfram_mode, fmt)
     else:
         _usage()
         sys.exit(1)
 
 
-def _process_expr(expr: str, execute_mode: bool, pretty: bool):
+def _process_expr(expr: str, wolfram_mode: bool, fmt: str):
     try:
-        if execute_mode:
-            print(execute(expr, pretty=pretty))
+        if wolfram_mode:
+            print(to_wolfram(expr))
         else:
-            print(convert(expr))
+            print(convert(expr, fmt=fmt))
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
 
-def _process_file(filename: str, execute_mode: bool, pretty: bool):
+def _process_file(filename: str, wolfram_mode: bool, fmt: str):
     try:
         with open(filename) as f:
             for line in f:
                 line = line.strip()
                 if line and not line.startswith("#"):
-                    if execute_mode:
-                        print(execute(line, pretty=pretty))
+                    if wolfram_mode:
+                        print(to_wolfram(line))
                     else:
-                        print(convert(line))
+                        print(convert(line, fmt=fmt))
     except FileNotFoundError:
         print(f"Error: file not found: {filename}", file=sys.stderr)
         sys.exit(1)
@@ -73,12 +75,12 @@ def _process_file(filename: str, execute_mode: bool, pretty: bool):
 
 def _usage():
     print(
-        "Usage: python -m math2wolfram [--execute] [--plain] <expression>\n"
-        "       python -m math2wolfram [--execute] [--plain] -f <file>\n"
+        "Usage: python -m mathio [--wolfram] [--plain|--latex] <expression>\n"
+        "       python -m mathio [--wolfram] [--plain|--latex] -f <file>\n"
         "\n"
-        "  --execute   Evaluate using SymPy (default: generate Wolfram code)\n"
-        "  --plain     Use plain text output instead of Unicode pretty-printing\n"
-        "              (only meaningful with --execute)\n"
+        "  --wolfram   Generate Wolfram Language code (default: evaluate with SymPy)\n"
+        "  --plain     Plain text output (default: Unicode pretty-printing)\n"
+        "  --latex     LaTeX output (default: Unicode pretty-printing)\n"
         "  -f, --file  Read expressions from a file, one per line\n"
     )
 

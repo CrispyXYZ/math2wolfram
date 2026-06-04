@@ -1,15 +1,15 @@
-class BMWError(Exception):
-    """Base exception for math2wolfram."""
+class MathioError(Exception):
+    """Base exception for mathio."""
 
 
-class LexerError(BMWError):
+class LexerError(MathioError):
     def __init__(self, message: str, source: str, pos: int):
         self.source = source
         self.pos = pos
         super().__init__(_format_error(message, source, pos, pos + 1))
 
 
-class ParseError(BMWError):
+class ParseError(MathioError):
     def __init__(self, message: str, source: str, start: int, end: int):
         self.source = source
         self.start = start

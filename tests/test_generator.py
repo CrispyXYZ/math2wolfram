@@ -1,5 +1,5 @@
-from math2wolfram.wolfram_generator import WolframGenerator
-from math2wolfram.ast_nodes import (
+from mathio.wolfram_generator import WolframGenerator
+from mathio.ast_nodes import (
     BinaryOp, Constant, DefiniteIntegral, Derivative, FuncCall,
     Identifier, ImplicitMultiply, Integral, Negation, Number,
 )

@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+from typing import Literal
+
 from .config import CONST_MAP, FUNC_MAP, KEYWORD_TYPE, SYMPY_CONST_MAP, SYMPY_FUNC_MAP
 from .parser import Parser
 from .sympy_executor import SymPyExecutor
 from .tokenizer import Lexer
 from .wolfram_generator import WolframGenerator
+
+Format = Literal["pretty", "plain", "latex"]
 
 
 class Converter:
@@ -24,35 +28,36 @@ class Converter:
             const_map=sympy_const_map if sympy_const_map is not None else SYMPY_CONST_MAP,
         )
 
-    def convert(self, source: str) -> str:
+    def convert(self, source: str, *, fmt: Format = "pretty") -> str:
+        """Evaluate *source* symbolically using SymPy and return the result.
+
+        *fmt* controls the output format:
+        - ``"pretty"`` — Unicode pretty-printing (default)
+        - ``"plain"`` — plain text
+        - ``"latex"`` — LaTeX string
+        """
+        tokens = self._lexer.tokenize(source)
+        ast = self._parser.parse(tokens, source)
+        return self._sympy.evaluate(ast, fmt=fmt)
+
+    def to_wolfram(self, source: str) -> str:
+        """Generate Wolfram Language code for *source*."""
         tokens = self._lexer.tokenize(source)
         ast = self._parser.parse(tokens, source)
         return self._wolfram.generate(ast)
 
-    def execute(self, source: str, *, pretty: bool = True) -> str:
-        tokens = self._lexer.tokenize(source)
-        ast = self._parser.parse(tokens, source)
-        return self._sympy.evaluate(ast, pretty=pretty)
+
+def convert(source: str, *, fmt: Format = "pretty") -> str:
+    """Evaluate a mathematical expression symbolically using SymPy.
+
+    Shortcut for ``Converter().convert(source, fmt=fmt)``.
+    """
+    return Converter().convert(source, fmt=fmt)
 
 
-def convert(
-    source: str,
-    func_map: dict[str, str] | None = None,
-    const_map: dict[str, str] | None = None,
-) -> str:
-    """Convenience function: convert a math expression to Wolfram Language."""
-    return Converter(func_map=func_map, const_map=const_map).convert(source)
+def to_wolfram(source: str) -> str:
+    """Generate Wolfram Language code for a mathematical expression.
 
-
-def execute(
-    source: str,
-    func_map: dict[str, str] | None = None,
-    const_map: dict[str, str] | None = None,
-    *,
-    pretty: bool = True,
-) -> str:
-    """Evaluate a math expression symbolically using SymPy."""
-    return Converter(
-        sympy_func_map=func_map,
-        sympy_const_map=const_map,
-    ).execute(source, pretty=pretty)
+    Shortcut for ``Converter().to_wolfram(source)``.
+    """
+    return Converter().to_wolfram(source)
