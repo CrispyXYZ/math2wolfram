@@ -3,16 +3,34 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mathio"
+name = "mathio-py"
 version = "0.1.0"
 description = "Parse custom math notation and evaluate symbolically with SymPy"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
+authors = [{ name = "CrispyXYZ" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 dependencies = ["sympy>=1.12"]
+
+[project.urls]
+Homepage = "https://github.com/CrispyXYZ/mathio"
+Repository = "https://github.com/CrispyXYZ/mathio"
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 
 [tool.setuptools.packages.find]
 where = ["."]
+include = ["mathio*"]

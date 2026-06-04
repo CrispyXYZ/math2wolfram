@@ -5,7 +5,7 @@ Parse custom mathematical notation and evaluate symbolically with [SymPy](https:
 ## Installation
 
 ```bash
-pip install mathio
+pip install mathio-py
 ```
 
 SymPy is installed automatically as a required dependency.
